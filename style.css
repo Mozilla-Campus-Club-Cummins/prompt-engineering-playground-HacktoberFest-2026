@@ -1,73 +1,71 @@
-/* General Styling */
+
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
     background: #f4f6fb;
-    color: #222;
+    color: #252b36;
     line-height: 1.6;
 }
 
-/* Header */
 header {
-    background: linear-gradient(135deg, #5b4bdb, #8b5cf6);
-    color: white;
+    background: #273c75;
+    color: #ffffff;
     text-align: center;
-    padding: 40px 20px;
+    padding: 32px 20px;
 }
 
 header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
+    margin: 0 0 8px;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
 }
 
 header p {
-    font-size: 16px;
-    opacity: 0.9;
+    margin: 0;
+    color: #e8edff;
 }
 
-/* Main Container */
 main {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 0 20px;
+    width: min(900px, 92%);
+    margin: 28px auto;
 }
 
-/* Cards */
 .card {
-    background: white;
-    padding: 25px;
-    margin-bottom: 25px;
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e6ef;
+    box-shadow: 0 3px 12px rgba(25, 40, 75, 0.05);
 }
 
 .card h2 {
-    color: #5b4bdb;
-    margin-bottom: 20px;
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #273c75;
+    font-size: 1.35rem;
 }
 
-/* Form Elements */
 label {
     display: block;
-    font-weight: bold;
-    margin: 15px 0 8px;
+    margin: 16px 0 7px;
+    font-weight: 600;
 }
 
-textarea,
 input,
-select {
+select,
+textarea {
+    display: block;
     width: 100%;
     padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 15px;
-    margin-bottom: 12px;
-    background: #fff;
+    border: 1px solid #cbd2df;
+    border-radius: 7px;
+    font: inherit;
+    color: #252b36;
+    background: #ffffff;
 }
 
 textarea {
@@ -78,224 +76,217 @@ textarea {
 textarea:focus,
 input:focus,
 select:focus {
-    outline: none;
-    border-color: #7c3aed;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    outline: 2px solid #8da7f5;
+    outline-offset: 1px;
+    border-color: #526fca;
 }
 
-/* Buttons */
+textarea[readonly] {
+    background: #f7f8fc;
+}
+
 button {
-    background: #6d5ce7;
-    color: white;
+    display: inline-block;
+    margin-top: 18px;
+    padding: 11px 18px;
     border: none;
-    padding: 13px 20px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: bold;
+    border-radius: 7px;
+    background: #273c75;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
     cursor: pointer;
-    margin: 12px 0;
-    transition: 0.2s;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 button:hover {
-    background: #5141c7;
-    transform: translateY(-1px);
+    background: #1c2d5c;
 }
 
-/* Response Boxes */
+button:focus-visible {
+    outline: 3px solid #8da7f5;
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
 .response-box {
-    background: #f8f7ff;
-    border: 1px solid #e5e0ff;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.response-box h3 {
-    color: #5b4bdb;
-    margin-bottom: 10px;
-}
-
-.response-box p {
-    white-space: pre-wrap;
+    padding: 16px;
+    margin: 16px 0;
+    border: 1px solid #e0e5ef;
+    border-radius: 9px;
+    background: #f8f9fd;
     overflow-wrap: anywhere;
 }
 
-/* Evaluation */
-#evaluationResult {
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    padding: 18px;
-    border-radius: 10px;
+.response-box h3 {
+    margin-top: 0;
+    color: #273c75;
 }
 
-/* Footer */
-footer {
+.response-box p:last-child {
+    margin-bottom: 0;
+}
+
+.response-box pre {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 12px;
+    background: #edf0f7;
+    border-radius: 6px;
+}
+
+.response-box img {
+    max-width: 100%;
+}
+
+.evaluation-note {
+    color: #687184;
+    font-size: 0.94rem;
+}
+
+#evaluationResults h3 {
+    color: #273c75;
+    margin-bottom: 8px;
+}
+
+#evaluationResults hr {
+    border: 0;
+    border-top: 1px solid #e2e6ef;
+    margin: 20px 0;
+}
+
+.history-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.history-heading h2 {
+    margin-bottom: 4px;
+}
+
+.history-heading .evaluation-note {
+    margin-top: 0;
+}
+
+.button-secondary {
+    margin-top: 0;
+    background: #e9edf7;
+    color: #273c75;
+    border: 1px solid #cbd4e8;
+    white-space: nowrap;
+}
+
+.button-secondary:hover {
+    background: #dbe3f5;
+}
+
+#promptHistoryList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.history-empty {
+    color: #687184;
+    font-style: italic;
+    margin: 0;
+    padding: 16px;
     text-align: center;
-    padding: 25px;
-    color: #666;
-    font-size: 14px;
+    background: #f8f9fd;
+    border: 1px dashed #cbd2df;
+    border-radius: 8px;
 }
 
-/* Mobile Responsive */
+.history-item {
+    min-width: 0;
+    padding: 18px;
+    background: #f8f9fd;
+    border: 1px solid #e0e5ef;
+    border-radius: 9px;
+}
+
+.history-item h3 {
+    margin: 0 0 12px;
+    color: #273c75;
+    font-size: 1.05rem;
+}
+
+.history-item p {
+    margin: 8px 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.history-item .history-date {
+    color: #687184;
+    font-size: 0.85rem;
+}
+
+.history-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.history-actions button {
+    margin-top: 0;
+}
+
+.history-actions .restore-history {
+    background: #273c75;
+}
+
+.history-actions .restore-history:hover {
+    background: #1c2d5c;
+}
+
+footer {
+    padding: 20px;
+    background: #e9edf7;
+    color: #525d72;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
 @media (max-width: 600px) {
-    header h1 {
-        font-size: 24px;
+    header {
+        padding: 25px 16px;
+    }
+
+    main {
+        width: 94%;
+        margin: 18px auto;
     }
 
     .card {
         padding: 18px;
     }
 
-    main {
-        padding: 0 12px;
+    .history-heading {
+        flex-direction: column;
     }
-}
 
-/* AI Response Markdown Tables */
+    .history-heading .button-secondary {
+        margin-top: 4px;
+    }
 
-#originalResponse table,
-#improvedResponse table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0;
-    table-layout: auto;
-    display: block;
-    overflow-x: auto;
-}
+    .history-actions {
+        flex-direction: column;
+    }
 
-/* Table headers and cells */
-#originalResponse th,
-#originalResponse td,
-#improvedResponse th,
-#improvedResponse td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-    vertical-align: top;
-    min-width: 120px;
-}
-
-/* Table header styling */
-#originalResponse th,
-#improvedResponse th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
-
-/* Alternate row background */
-#originalResponse tr:nth-child(even),
-#improvedResponse tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Improve text readability */
-#originalResponse td,
-#improvedResponse td {
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-}
-
-#originalResponse,
-#improvedResponse {
-    line-height: 1.5;
-}
-
-#originalResponse h1,
-#originalResponse h2,
-#originalResponse h3,
-#improvedResponse h1,
-#improvedResponse h2,
-#improvedResponse h3 {
-    margin: 12px 0 8px;
-}
-
-#originalResponse p,
-#improvedResponse p {
-    margin: 6px 0;
-}
-
-#originalResponse ul,
-#originalResponse ol,
-#improvedResponse ul,
-#improvedResponse ol {
-    margin: 6px 0;
-    padding-left: 20px;
-}
-
-#originalResponse li,
-#improvedResponse li {
-    margin: 4px 0;
-}
-
-#originalResponse hr,
-#improvedResponse hr {
-    margin: 12px 0;
-}
-
-#originalResponse,
-#improvedResponse {
-    line-height: 1.5;
-}
-
-#originalResponse h1,
-#originalResponse h2,
-#originalResponse h3,
-#improvedResponse h1,
-#improvedResponse h2,
-#improvedResponse h3 {
-    margin: 12px 0 8px;
-}
-
-#originalResponse p,
-#improvedResponse p {
-    margin: 6px 0;
-}
-
-#originalResponse ul,
-#originalResponse ol,
-#improvedResponse ul,
-#improvedResponse ol {
-    margin: 6px 0;
-    padding-left: 24px;
-}
-
-#originalResponse li,
-#improvedResponse li {
-    margin: 4px 0;
-}
-
-#originalResponse hr,
-#improvedResponse hr {
-    margin: 12px 0;
-}
-
-/* Fix excessive spacing inside AI-generated lists */
-
-#originalResponse li p,
-#improvedResponse li p {
-    margin: 0 !important;
-    padding: 0;
-}
-
-#originalResponse li,
-#improvedResponse li {
-    margin: 4px 0 !important;
-    padding: 0;
-}
-
-#originalResponse ul,
-#originalResponse ol,
-#improvedResponse ul,
-#improvedResponse ol {
-    margin-top: 4px !important;
-    margin-bottom: 8px !important;
-}
-
-#originalResponse ul ul,
-#originalResponse ol ol,
-#improvedResponse ul ul,
-#improvedResponse ol ol {
-    margin-top: 4px !important;
-    margin-bottom: 4px !important;
+    .history-actions button {
+        width: 100%;
+    }
 }
