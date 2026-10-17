@@ -191,3 +191,12 @@ function displayEvaluation(originalPrompt, improvedPrompt) {
         <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
     `;
 }
+// STEP 5: Select a Prompt Template
+const templateButtons = document.querySelectorAll(".template-btn");
+
+templateButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        originalPrompt.value = button.dataset.prompt;
+        originalPrompt.focus();
+    });
+});

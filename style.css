@@ -299,3 +299,31 @@ footer {
     margin-top: 4px !important;
     margin-bottom: 4px !important;
 }
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.template-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    text-align: left;
+    background: #f5f5ff;
+    border: 1px solid #d6d6ef;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #000;
+}
+
+.template-btn:hover {
+    background: #e8e8ff;
+}
+
+.template-btn span {
+    font-size: 14px;
+    font-weight: normal;
+}
