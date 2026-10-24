@@ -67,6 +67,9 @@
                 placeholder="Your improved prompt will appear here..."
                 readonly
             ></textarea>
+            <button id="copyPrompt" type="button">Copy Prompt</button>
+<p id="copyMessage" role="status" aria-live="polite"></p>
+
         </section>
 
         <!-- AI Response Section -->
@@ -90,25 +93,33 @@
             <button id="compareResponses">
                 Compare Responses
             </button>
+<<<<<<< HEAD
             <button id="exportResponses">
     Export Responses
 </button>
+=======
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-indicator hidden" aria-live="polite">
+                <div class="spinner"></div>
+                <p>Generating and comparing AI responses...</p>
+            </div>
+>>>>>>> upstream/main
         </section>
 
         <!-- Evaluation Section -->
-        <!-- Evaluation Section -->
-<section class="card">
-    <h2>📊 Prompt Quality Evaluation</h2>
+        <section class="card">
+            <h2>📊 Prompt Quality Evaluation</h2>
 
-    <p class="evaluation-note">
-        Scores are based on simple rule-based checks
-        and do not guarantee response quality.
-    </p>
+            <p class="evaluation-note">
+                Scores are based on simple rule-based checks
+                and do not guarantee response quality.
+            </p>
 
-    <div id="evaluationResults">
-        <p>Generate responses to see the evaluation.</p>
-    </div>
-</section>
+            <div id="evaluationResults">
+                <p>Generate responses to see the evaluation.</p>
+            </div>
+        </section>
 
     </main>
 
@@ -117,8 +128,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
-<script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
