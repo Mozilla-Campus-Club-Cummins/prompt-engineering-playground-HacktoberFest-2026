@@ -191,3 +191,64 @@ function displayEvaluation(originalPrompt, improvedPrompt) {
         <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
     `;
 }
+// STEP 5: Export Original and Improved Responses
+document.getElementById("exportResponses").addEventListener("click", function () {
+
+    // Get the original and improved prompts
+    const original = originalPrompt.value.trim();
+    const improved = improvedPrompt.value.trim();
+
+    // Get the original and improved AI responses
+   // Get the original and improved AI responses
+const originalAnswer = originalResponse.innerText.trim();
+const improvedAnswer = improvedResponse.innerText.trim();
+
+// Check whether responses are still loading or have failed
+const loadingMessage = "Generating AI response...";
+const failedMessage = "Failed to generate response.";
+
+const placeholderMessage =
+    "Click Compare Responses to generate the AI response.";
+
+const originalIsUnavailable =
+    !originalAnswer ||
+    originalAnswer === loadingMessage ||
+    originalAnswer === failedMessage ||
+    originalAnswer === placeholderMessage;
+
+const improvedIsUnavailable =
+    !improvedAnswer ||
+    improvedAnswer === loadingMessage ||
+    improvedAnswer === failedMessage ||
+    improvedAnswer === placeholderMessage;
+    // Prepare the content for the text file
+    const content = `
+Original Prompt:
+${original || "No original prompt entered."}
+
+Original Response:
+${originalIsUnavailable ? "No original response available." : originalAnswer}
+
+
+Improved Prompt:
+${improved || "No improved prompt available."}
+
+Improved Response:
+${improvedIsUnavailable ? "No improved response available." : improvedAnswer}
+`;
+
+    // Create a text file
+    const file = new Blob([content], { type: "text/plain" });
+
+    // Create a temporary download link
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(file);
+    link.download = "prompt-responses.txt";
+
+    // Start downloading
+    link.click();
+
+    // Release the temporary URL
+    URL.revokeObjectURL(link.href);
+
+});
