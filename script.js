@@ -204,70 +204,70 @@ function displayEvaluation(originalPrompt, improvedPrompt) {
         <h3>Score Difference: ${improved.total - original.total} points</h3>
         <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
     `;
-<<<<<<< HEAD
 }
-// STEP 5: Export Original and Improved Responses
-document.getElementById("exportResponses").addEventListener("click", function () {
 
-    // Get the original and improved prompts
+
+// STEP 5: Export Original and Improved Responses
+
+document.getElementById("exportResponses").addEventListener("click", function () {
     const original = originalPrompt.value.trim();
     const improved = improvedPrompt.value.trim();
 
-    // Get the original and improved AI responses
-   // Get the original and improved AI responses
-const originalAnswer = originalResponse.innerText.trim();
-const improvedAnswer = improvedResponse.innerText.trim();
+    const originalAnswer = originalResponse.innerText.trim();
+    const improvedAnswer = improvedResponse.innerText.trim();
 
-// Check whether responses are still loading or have failed
-const loadingMessage = "Generating AI response...";
-const failedMessage = "Failed to generate response.";
+    const unavailableMessages = [
+    "",
+    "Generating AI response...",
+    "Failed to generate response.",
+    "Click Compare Responses to generate the AI response.",
+    "Your original prompt's AI response will appear here.",
+    "Your improved prompt's AI response will appear here."
+];
 
-const placeholderMessage =
-    "Click Compare Responses to generate the AI response.";
 
-const originalIsUnavailable =
-    !originalAnswer ||
-    originalAnswer === loadingMessage ||
-    originalAnswer === failedMessage ||
-    originalAnswer === placeholderMessage;
 
-const improvedIsUnavailable =
-    !improvedAnswer ||
-    improvedAnswer === loadingMessage ||
-    improvedAnswer === failedMessage ||
-    improvedAnswer === placeholderMessage;
-    // Prepare the content for the text file
+    const originalIsUnavailable = unavailableMessages.includes(originalAnswer);
+    const improvedIsUnavailable = unavailableMessages.includes(improvedAnswer);
+
     const content = `
+PROMPT ENGINEERING PLAYGROUND
+=============================
+
 Original Prompt:
 ${original || "No original prompt entered."}
 
 Original Response:
-${originalIsUnavailable ? "No original response available." : originalAnswer}
-
+${originalIsUnavailable ? "No original response available. Please generate the response first." : originalAnswer}
 
 Improved Prompt:
 ${improved || "No improved prompt available."}
 
 Improved Response:
-${improvedIsUnavailable ? "No improved response available." : improvedAnswer}
+${improvedIsUnavailable ? "No improved response available. Please generate the response first." : improvedAnswer}
+
+=============================
+Exported from Prompt Engineering Playground
 `;
 
-    // Create a text file
-    const file = new Blob([content], { type: "text/plain" });
-
-    // Create a temporary download link
+    const file = new Blob([content], { type: "text/plain;charset=utf-8" });
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(file);
+    const fileURL = URL.createObjectURL(file);
+
+    link.href = fileURL;
     link.download = "prompt-responses.txt";
 
-    // Start downloading
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
 
-    // Release the temporary URL
-    URL.revokeObjectURL(link.href);
+    URL.revokeObjectURL(fileURL);
+});
 
-=======
-}// STEP 5: Copy Improved Prompt
+
+
+
+// STEP 6: Copy Improved Prompt
 
 const copyPromptButton = document.getElementById("copyPrompt");
 const copyMessage = document.getElementById("copyMessage");
@@ -287,5 +287,4 @@ copyPromptButton.addEventListener("click", async function () {
         copyMessage.textContent =
             "Unable to copy the prompt. Please copy it manually.";
     }
->>>>>>> upstream/main
 });
