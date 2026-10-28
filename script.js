@@ -76,13 +76,18 @@ compareResponsesBtn.addEventListener("click", async function () {
     const original = originalPrompt.value.trim();
     const improved = improvedPrompt.value.trim();
 
+    if (!original && !improved) {
+        alert("Please enter both the original and improved prompts.");
+        return;
+    }
+
     if (!original) {
         alert("Please enter your original prompt first.");
         return;
     }
 
     if (!improved) {
-        alert("Please generate an improved prompt first.");
+        alert("Please enter or generate an improved prompt first.");
         return;
     }
 
@@ -204,8 +209,9 @@ function displayEvaluation(originalPrompt, improvedPrompt) {
         <h3>Score Difference: ${improved.total - original.total} points</h3>
         <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
     `;
-}// STEP 5: Copy Improved Prompt
+}
 
+// STEP 5: Copy Improved Prompt
 const copyPromptButton = document.getElementById("copyPrompt");
 const copyMessage = document.getElementById("copyMessage");
 
