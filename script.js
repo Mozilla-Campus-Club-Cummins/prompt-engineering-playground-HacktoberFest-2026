@@ -66,6 +66,14 @@ function renderResponse(element, text) {
     element.innerHTML = DOMPurify.sanitize(
         marked.parse(cleanedText)
     );
+
+    // Wrap tables so wide ones scroll horizontally without breaking table layout
+    element.querySelectorAll("table").forEach(function (table) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "table-wrapper";
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+    });
 }
 
 // STEP 2: Compare Responses using Groq API
