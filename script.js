@@ -85,13 +85,18 @@ compareResponsesBtn.addEventListener("click", async function () {
     const original = originalPrompt.value.trim();
     const improved = improvedPrompt.value.trim();
 
+    if (!original && !improved) {
+        alert("Please enter both the original and improved prompts.");
+        return;
+    }
+
     if (!original) {
         alert("Please enter your original prompt first.");
         return;
     }
 
     if (!improved) {
-        alert("Please generate an improved prompt first.");
+        alert("Please enter or generate an improved prompt first.");
         return;
     }
 
