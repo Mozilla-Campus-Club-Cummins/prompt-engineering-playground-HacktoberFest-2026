@@ -213,24 +213,37 @@ function displayEvaluation(originalPrompt, improvedPrompt) {
         <h3>Score Difference: ${improved.total - original.total} points</h3>
         <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
     `;
-}// STEP 5: Copy Improved Prompt
+}
 
+// STEP 5: Select a Prompt Template
+const templateButtons = document.querySelectorAll(".template-btn");
+
+templateButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        originalPrompt.value = button.dataset.prompt;
+        originalPrompt.focus();
+    });
+});
+
+// STEP 6: Copy Improved Prompt
 const copyPromptButton = document.getElementById("copyPrompt");
 const copyMessage = document.getElementById("copyMessage");
 
-copyPromptButton.addEventListener("click", async function () {
-    const prompt = improvedPrompt.value.trim();
+if (copyPromptButton && copyMessage) {
+    copyPromptButton.addEventListener("click", async function () {
+        const prompt = improvedPrompt.value.trim();
 
-    if (!prompt) {
-        copyMessage.textContent = "No improved prompt available to copy.";
-        return;
-    }
+        if (!prompt) {
+            copyMessage.textContent = "No improved prompt available to copy.";
+            return;
+        }
 
-    try {
-        await navigator.clipboard.writeText(prompt);
-        copyMessage.textContent = "Prompt copied successfully!";
-    } catch (error) {
-        copyMessage.textContent =
-            "Unable to copy the prompt. Please copy it manually.";
-    }
-});
+        try {
+            await navigator.clipboard.writeText(prompt);
+            copyMessage.textContent = "Prompt copied successfully!";
+        } catch (error) {
+            copyMessage.textContent =
+                "Unable to copy the prompt. Please copy it manually.";
+        }
+    });
+}

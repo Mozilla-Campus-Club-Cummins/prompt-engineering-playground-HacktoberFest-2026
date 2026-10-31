@@ -299,51 +299,76 @@ footer {
     margin-top: 4px !important;
     margin-bottom: 4px !important;
 }
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
 
-/* --- Loading Indicator Styles (#11) --- */
+.template-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    text-align: left;
+    background: #f5f5ff;
+    border: 1px solid #d6d6ef;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #000;
+}
+
+.template-btn:hover {
+    background: #e8e8ff;
+}
+
+.template-btn span {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+/* Loading Indicator Styles */
 .loading-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem 0;
-  gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 0;
+    gap: 0.75rem;
 }
 
 .loading-indicator p {
-  color: #4b5563;
-  font-size: 0.95rem;
-  font-weight: 500;
-  margin: 0;
+    color: #4b5563;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
 }
 
-/* Rotating Spinner */
 .spinner {
-  width: 36px;
-  height: 36px;
-  border: 4px solid #e5e7eb;
-  border-top-color: #2563eb;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+    width: 36px;
+    height: 36px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Helper to show/hide */
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
-/* Visual state for disabled button */
 button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
 }
