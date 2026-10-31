@@ -1,23 +1,22 @@
-
 const originalPrompt = document.getElementById("originalPrompt");
 const topicInput = document.getElementById("topic");
 const audienceInput = document.getElementById("audience");
 const styleInput = document.getElementById("style");
-
 const improvedPrompt = document.getElementById("improvedPrompt");
-
 const originalResponse = document.getElementById("originalResponse");
 const improvedResponse = document.getElementById("improvedResponse");
-
 const evaluationResults = document.getElementById("evaluationResults");
 const promptHistoryList = document.getElementById("promptHistoryList");
 const clearPromptHistoryButton = document.getElementById("clearPromptHistory");
+const compareResponsesBtn = document.getElementById("compareResponses");
+const loadingIndicator = document.getElementById("loadingIndicator");
 
 const HISTORY_KEY = "promptComparisonHistory";
 const MAX_HISTORY_ITEMS = 20;
-
 let promptHistory = [];
+let isProcessing = false;
 
+// Load saved history safely.
 try {
     const savedHistory = sessionStorage.getItem(HISTORY_KEY);
     const parsedHistory = savedHistory ? JSON.parse(savedHistory) : [];
@@ -36,6 +35,7 @@ try {
     }
 } catch (error) {
     promptHistory = [];
+    console.error("Could not load prompt history:", error);
 }
 
 function savePromptHistory() {
@@ -48,38 +48,25 @@ function savePromptHistory() {
 }
 
 function renderResponse(element, text) {
-    const cleanedText = String(text)
+    if (typeof text !== "string" || !text.trim()) {
+        element.textContent = "AI response is unavailable. Please try again.";
+        return;
+    }
+
+    const cleanedText = text
         .replace(/\r\n/g, "\n")
         .replace(/\n[ \t]*\n(?:[ \t]*\n)+/g, "\n\n")
         .trim();
 
     element.innerHTML = DOMPurify.sanitize(marked.parse(cleanedText));
-}
 
-function displayEvaluation(originalPromptText, improvedPromptText) {
-    const original = evaluatePrompt(originalPromptText);
-    const improved = evaluatePrompt(improvedPromptText);
-
-    evaluationResults.innerHTML = `
-        <h3>Original Prompt: ${original.total}/20</h3>
-        <p>Specificity: ${original.specificity}/5</p>
-        <p>Clarity: ${original.clarity}/5</p>
-        <p>Context: ${original.context}/5</p>
-        <p>Structure: ${original.structure}/5</p>
-
-        <hr>
-
-        <h3>Improved Prompt: ${improved.total}/20</h3>
-        <p>Specificity: ${improved.specificity}/5</p>
-        <p>Clarity: ${improved.clarity}/5</p>
-        <p>Context: ${improved.context}/5</p>
-        <p>Structure: ${improved.structure}/5</p>
-
-        <hr>
-
-        <h3>Score Difference: ${improved.total - original.total} points</h3>
-        <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
-    `;
+    // Allow wide tables to scroll horizontally.
+    element.querySelectorAll("table").forEach(function (table) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "table-wrapper";
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+    });
 }
 
 function evaluatePrompt(prompt) {
@@ -124,7 +111,30 @@ function evaluatePrompt(prompt) {
     };
 }
 
+function displayEvaluation(originalPromptText, improvedPromptText) {
+    const original = evaluatePrompt(originalPromptText);
+    const improved = evaluatePrompt(improvedPromptText);
+
+    evaluationResults.innerHTML = `
+        <h3>Original Prompt: ${original.total}/20</h3>
+        <p>Specificity: ${original.specificity}/5</p>
+        <p>Clarity: ${original.clarity}/5</p>
+        <p>Context: ${original.context}/5</p>
+        <p>Structure: ${original.structure}/5</p>
+        <hr>
+        <h3>Improved Prompt: ${improved.total}/20</h3>
+        <p>Specificity: ${improved.specificity}/5</p>
+        <p>Clarity: ${improved.clarity}/5</p>
+        <p>Context: ${improved.context}/5</p>
+        <p>Structure: ${improved.structure}/5</p>
+        <hr>
+        <h3>Score Difference: ${improved.total - original.total} points</h3>
+        <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
+    `;
+}
+
 function renderPromptHistory() {
+    if (!promptHistoryList) return;
     promptHistoryList.replaceChildren();
 
     if (promptHistory.length === 0) {
@@ -132,7 +142,6 @@ function renderPromptHistory() {
         emptyMessage.className = "history-empty";
         emptyMessage.textContent =
             "No prompt history yet. Compare two prompts to get started.";
-
         promptHistoryList.appendChild(emptyMessage);
         return;
     }
@@ -172,7 +181,6 @@ function renderPromptHistory() {
         restoreButton.type = "button";
         restoreButton.className = "restore-history";
         restoreButton.textContent = "Restore Comparison";
-
         restoreButton.addEventListener("click", () => {
             restorePromptHistory(item.id);
         });
@@ -226,28 +234,22 @@ function restorePromptHistory(id) {
 
     renderResponse(originalResponse, item.originalResponse);
     renderResponse(improvedResponse, item.improvedResponse);
-
     displayEvaluation(item.originalPrompt, item.improvedPrompt);
 
-    document.getElementById("originalPrompt").scrollIntoView({
+    originalPrompt.scrollIntoView({
         behavior: "smooth",
         block: "center"
     });
 }
 
-// Loading indicator and compare button elements
-const compareResponsesBtn = document.getElementById("compareResponses");
-const loadingIndicator = document.getElementById("loadingIndicator");
-
-let isProcessing = false;
-
-// Helper to toggle loading indicator and button state
 function setLoading(isLoading) {
     isProcessing = isLoading;
 
     if (compareResponsesBtn) {
         compareResponsesBtn.disabled = isLoading;
-        compareResponsesBtn.textContent = isLoading ? "Generating..." : "Compare Responses";
+        compareResponsesBtn.textContent =
+            isLoading ? "Generating..." : "Compare Responses";
+
         if (isLoading) {
             compareResponsesBtn.setAttribute("aria-busy", "true");
         } else {
@@ -260,189 +262,222 @@ function setLoading(isLoading) {
     }
 }
 
-// STEP 1: Generate Improved Prompt
-document.getElementById("generatePrompt").addEventListener("click", function () {
-    const topic = topicInput.value.trim();
-    const audience = audienceInput.value;
-    const style = styleInput.value;
+// STEP 1: Generate an improved prompt.
+const generatePromptButton = document.getElementById("generatePrompt");
 
-    if (!topic || !audience || !style) {
-        alert("Please fill in the topic, audience, and explanation style.");
-        return;
-    }
+if (generatePromptButton) {
+    generatePromptButton.addEventListener("click", function () {
+        const topic = topicInput.value.trim();
+        const audience = audienceInput.value;
+        const style = styleInput.value;
 
-    const finalPrompt = `Explain ${topic} to a ${audience} using ${style}.`;
-    improvedPrompt.value = finalPrompt;
+        if (!topic || !audience || !style) {
+            alert("Please fill in the topic, audience, and explanation style.");
+            return;
+        }
 
-    // Reset previous responses
-    originalResponse.textContent = "Click Compare Responses to generate the AI response.";
-    improvedResponse.textContent = "Click Compare Responses to generate the AI response.";
-    evaluationResults.textContent = "Your evaluation results will appear here.";
-});
+        improvedPrompt.value =
+            `Explain ${topic} to a ${audience} using ${style}.`;
 
-
-
- // Render sanitized Markdown responses safely
-function renderResponse(element, text) {
-    if (typeof text !== "string" || !text.trim()) {
-        element.textContent =
-            "AI response is unavailable. Please try again.";
-        return;
-    }
-
-    const cleanedText = text
-        .replace(/\r\n/g, "\n")
-        .replace(/\n[ \t]*\n(?:[ \t]*\n)+/g, "\n\n")
-        .trim();
-
-    element.innerHTML = DOMPurify.sanitize(
-        marked.parse(cleanedText)
-    );
+        originalResponse.textContent =
+            "Click Compare Responses to generate the AI response.";
+        improvedResponse.textContent =
+            "Click Compare Responses to generate the AI response.";
+        evaluationResults.textContent =
+            "Your evaluation results will appear here.";
+    });
 }
 
+// STEP 2: Compare prompts using the backend API.
+if (compareResponsesBtn) {
+    compareResponsesBtn.addEventListener("click", async function () {
+        if (isProcessing) return;
 
-// STEP 2: Compare Responses using Groq API
-compareResponsesBtn.addEventListener("click", async function () {
-    // Guard against duplicate requests while one is already processing
-    if (isProcessing) return;
+        const original = originalPrompt.value.trim();
+        const improved = improvedPrompt.value.trim();
 
-    const original = originalPrompt.value.trim();
-    const improved = improvedPrompt.value.trim();
-
-    if (!original) {
-        alert("Please enter your original prompt first.");
-        return;
-    }
-
-    if (!improved) {
-        alert("Please generate an improved prompt first.");
-        return;
-    }
-
-    // Trigger visual loading indicator and disable button
-    setLoading(true);
-
-    // Initial message placeholders while loading
-    originalResponse.textContent = "Generating AI response...";
-    improvedResponse.textContent = "Generating AI response...";
-    evaluationResults.textContent = "Waiting for AI responses...";
-
-    try {
-        // Send both prompts to Python FastAPI backend
-        const response = await fetch("http://127.0.0.1:8000/api/compare", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                original_prompt: original,
-                improved_prompt: improved
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.detail || "Something went wrong.");
+        if (!original || !improved) {
+            alert("Please enter both the original and improved prompts.");
+            return;
         }
 
-        if (
-            typeof data.original_response !== "string" ||
-            typeof data.improved_response !== "string"
-        ) {
-            throw new Error("The backend returned an unexpected response.");
+        setLoading(true);
+        originalResponse.textContent = "Generating AI response...";
+        improvedResponse.textContent = "Generating AI response...";
+        evaluationResults.textContent = "Waiting for AI responses...";
+
+        try {
+            const response = await fetch(
+                "http://127.0.0.1:8000/api/compare",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        original_prompt: original,
+                        improved_prompt: improved
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.detail || "Something went wrong.");
+            }
+
+            if (
+                typeof data.original_response !== "string" ||
+                typeof data.improved_response !== "string"
+            ) {
+                throw new Error(
+                    "The backend returned an unexpected response."
+                );
+            }
+
+            renderResponse(originalResponse, data.original_response);
+            renderResponse(improvedResponse, data.improved_response);
+            displayEvaluation(original, improved);
+
+            addToPromptHistory(
+                original,
+                improved,
+                data.original_response,
+                data.improved_response
+            );
+        } catch (error) {
+            console.error("Comparison error:", error);
+            originalResponse.textContent = "Failed to generate response.";
+            improvedResponse.textContent = "Failed to generate response.";
+            evaluationResults.textContent = "Error: " + error.message;
+        } finally {
+            setLoading(false);
         }
+    });
+}
 
-        renderResponse(originalResponse, data.original_response);
-        renderResponse(improvedResponse, data.improved_response);
+// STEP 3: Clear prompt history.
+if (clearPromptHistoryButton) {
+    clearPromptHistoryButton.addEventListener("click", function () {
+        if (promptHistory.length === 0) return;
 
-        displayEvaluation(original, improved);
-
-        addToPromptHistory(
-            original,
-            improved,
-            data.original_response,
-            data.improved_response
+        const confirmed = confirm(
+            "Are you sure you want to clear your prompt history?"
         );
-    } catch (error) {
-         console.error("Comparison error:", error);
-        originalResponse.textContent = "Failed to generate response.";
-        improvedResponse.textContent = "Failed to generate response.";
-         evaluationResults.textContent = "Error: " + error.message;
-    } finally {
-      setLoading(false);
-    }
-});
 
-        evaluationResults.textContent = "Error: " + error.message;
-    } finally {
-        button.disabled = false;
-        button.textContent = "Compare Responses";
-        // Display actual AI responses
-        renderResponse(originalResponse, data.original_response);
-        renderResponse(improvedResponse, data.improved_response);
+        if (!confirmed) return;
 
-        // Evaluate both prompts
-        displayEvaluation(original, improved);
+        promptHistory = [];
 
-    } catch (error) {
-        console.error("Comparison error:", error);
-        originalResponse.textContent = "Failed to generate response.";
-        improvedResponse.textContent = "Failed to generate response.";
-        evaluationResults.textContent = "Error: " + error.message;
-    } finally {
-        // Always hides the loader and re-enables the button (both success and error)
-        setLoading(false);
-    }
-});
+        try {
+            sessionStorage.removeItem(HISTORY_KEY);
+        } catch (error) {
+            console.error("Could not clear prompt history:", error);
+        }
 
-clearPromptHistoryButton.addEventListener("click", function () {
-    if (promptHistory.length === 0) {
-        return;
-    }
-
-    const confirmed = confirm("Are you sure you want to clear your prompt history?");
-
-    if (!confirmed) {
-        return;
-    }
-
-    promptHistory = [];
-
-    try {
-        sessionStorage.removeItem(HISTORY_KEY);
-    } catch (error) {
-        console.error("Could not clear prompt history:", error);
-    }
-
-    renderPromptHistory();
-});
-
-
-        <h3>Score Difference: ${improved.total - original.total} points</h3>
-        <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
-    `;
+        renderPromptHistory();
+    });
 }
-// STEP 5: Copy Improved Prompt
 
+// STEP 4: Export original and improved prompts/responses.
+const exportResponsesButton = document.getElementById("exportResponses");
+
+if (exportResponsesButton) {
+    exportResponsesButton.addEventListener("click", function () {
+        const original = originalPrompt.value.trim();
+        const improved = improvedPrompt.value.trim();
+        const originalAnswer = originalResponse.innerText.trim();
+        const improvedAnswer = improvedResponse.innerText.trim();
+
+        const unavailableMessages = [
+            "",
+            "Generating AI response...",
+            "Failed to generate response.",
+            "Click Compare Responses to generate the AI response.",
+            "Your original prompt's AI response will appear here.",
+            "Your improved prompt's AI response will appear here."
+        ];
+
+        const originalIsUnavailable =
+            unavailableMessages.includes(originalAnswer);
+        const improvedIsUnavailable =
+            unavailableMessages.includes(improvedAnswer);
+
+        const content = `
+PROMPT ENGINEERING PLAYGROUND
+=============================
+
+Original Prompt:
+${original || "No original prompt entered."}
+
+Original Response:
+${originalIsUnavailable
+    ? "No original response available. Please generate the response first."
+    : originalAnswer}
+
+Improved Prompt:
+${improved || "No improved prompt available."}
+
+Improved Response:
+${improvedIsUnavailable
+    ? "No improved response available. Please generate the response first."
+    : improvedAnswer}
+
+=============================
+Exported from Prompt Engineering Playground
+`;
+
+        const file = new Blob(
+            [content],
+            { type: "text/plain;charset=utf-8" }
+        );
+
+        const link = document.createElement("a");
+        const fileURL = URL.createObjectURL(file);
+
+        link.href = fileURL;
+        link.download = "prompt-responses.txt";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(fileURL);
+    });
+}
+
+// STEP 5: Select a prompt template.
+document.querySelectorAll(".template-btn").forEach(function (button) {
+    button.addEventListener("click", function () {
+        originalPrompt.value = button.dataset.prompt || "";
+        originalPrompt.focus();
+    });
+});
+
+// STEP 6: Copy the improved prompt.
 const copyPromptButton = document.getElementById("copyPrompt");
 const copyMessage = document.getElementById("copyMessage");
 
-copyPromptButton.addEventListener("click", async function () {
-    const prompt = improvedPrompt.value.trim();
+if (copyPromptButton && copyMessage) {
+    copyPromptButton.addEventListener("click", async function () {
+        const prompt = improvedPrompt.value.trim();
 
-    if (!prompt) {
-        copyMessage.textContent = "No improved prompt available to copy.";
-        return;
-    }
+        if (!prompt) {
+            copyMessage.textContent =
+                "No improved prompt available to copy.";
+            return;
+        }
 
-    try {
-        await navigator.clipboard.writeText(prompt);
-        copyMessage.textContent = "Prompt copied successfully!";
-    } catch (error) {
-        copyMessage.textContent =
-            "Unable to copy the prompt. Please copy it manually.";
-    }
-});
+        try {
+            await navigator.clipboard.writeText(prompt);
+            copyMessage.textContent = "Prompt copied successfully!";
+        } catch (error) {
+            copyMessage.textContent =
+                "Unable to copy the prompt. Please copy it manually.";
+        }
+    });
+}
 
+// Render saved prompt history on page load.
 renderPromptHistory();
