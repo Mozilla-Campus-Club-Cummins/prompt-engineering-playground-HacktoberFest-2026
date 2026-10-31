@@ -54,6 +54,9 @@ prompt-engineering-playground/
 │   ├── main.py
 │   └── requirements.txt
 │
+├── tests/
+│   └── evaluatePrompt.test.js
+│
 ├── index.html
 ├── style.css
 ├── script.js
@@ -167,6 +170,20 @@ http://127.0.0.1:5500
 6. Click **Compare Responses**.
 7. Compare the AI-generated responses.
 8. Review the prompt evaluation scores.
+
+---
+
+## ✅ Running Tests
+
+The prompt evaluation logic (`evaluatePrompt` in `script.js`) has unit tests. They use Node.js's built-in test runner, so there is nothing extra to install.
+
+From the project root, run:
+
+```bash
+node --test
+```
+
+This needs Node.js 20 or later. No API key or running backend is required.
 
 ---
 
