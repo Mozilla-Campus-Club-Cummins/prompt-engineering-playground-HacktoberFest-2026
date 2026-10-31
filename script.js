@@ -214,8 +214,65 @@ function displayEvaluation(originalPrompt, improvedPrompt) {
         <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
     `;
 }
+// STEP 5: Export Original and Improved Responses
+const exportResponsesButton = document.getElementById("exportResponses");
 
-// STEP 5: Select a Prompt Template
+if (exportResponsesButton) {
+    exportResponsesButton.addEventListener("click", function () {
+        const original = originalPrompt.value.trim();
+        const improved = improvedPrompt.value.trim();
+
+        const originalAnswer = originalResponse.innerText.trim();
+        const improvedAnswer = improvedResponse.innerText.trim();
+
+        const unavailableMessages = [
+            "",
+            "Generating AI response...",
+            "Failed to generate response.",
+            "Click Compare Responses to generate the AI response.",
+            "Your original prompt's AI response will appear here.",
+            "Your improved prompt's AI response will appear here."
+        ];
+
+        const originalIsUnavailable = unavailableMessages.includes(originalAnswer);
+        const improvedIsUnavailable = unavailableMessages.includes(improvedAnswer);
+
+        const content = `
+PROMPT ENGINEERING PLAYGROUND
+=============================
+
+Original Prompt:
+${original || "No original prompt entered."}
+
+Original Response:
+${originalIsUnavailable ? "No original response available. Please generate the response first." : originalAnswer}
+
+Improved Prompt:
+${improved || "No improved prompt available."}
+
+Improved Response:
+${improvedIsUnavailable ? "No improved response available. Please generate the response first." : improvedAnswer}
+
+=============================
+Exported from Prompt Engineering Playground
+`;
+
+        const file = new Blob([content], { type: "text/plain;charset=utf-8" });
+        const link = document.createElement("a");
+        const fileURL = URL.createObjectURL(file);
+
+        link.href = fileURL;
+        link.download = "prompt-responses.txt";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(fileURL);
+    });
+}
+
+// STEP 6: Select a Prompt Template
 const templateButtons = document.querySelectorAll(".template-btn");
 
 templateButtons.forEach(function (button) {
@@ -225,7 +282,7 @@ templateButtons.forEach(function (button) {
     });
 });
 
-// STEP 6: Copy Improved Prompt
+// STEP 7: Copy Improved Prompt
 const copyPromptButton = document.getElementById("copyPrompt");
 const copyMessage = document.getElementById("copyMessage");
 
