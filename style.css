@@ -116,11 +116,6 @@ button:hover {
     margin-bottom: 10px;
 }
 
-.response-box p {
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-}
-
 /* Evaluation */
 #evaluationResult {
     background: #f0fdf4;
@@ -152,152 +147,155 @@ footer {
     }
 }
 
-/* AI Response Markdown Tables */
+/* AI Response Markdown Formatting */
 
-#originalResponse table,
-#improvedResponse table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0;
-    table-layout: auto;
-    display: block;
-    overflow-x: auto;
-}
-
-/* Table headers and cells */
-#originalResponse th,
-#originalResponse td,
-#improvedResponse th,
-#improvedResponse td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-    vertical-align: top;
-    min-width: 120px;
-}
-
-/* Table header styling */
-#originalResponse th,
-#improvedResponse th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
-
-/* Alternate row background */
-#originalResponse tr:nth-child(even),
-#improvedResponse tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Improve text readability */
-#originalResponse td,
-#improvedResponse td {
+.markdown-body {
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
 
-#originalResponse,
-#improvedResponse {
-    line-height: 1.5;
+/* Remove outer spacing so content sits flush inside the response box */
+.markdown-body > :first-child {
+    margin-top: 0;
 }
 
-#originalResponse h1,
-#originalResponse h2,
-#originalResponse h3,
-#improvedResponse h1,
-#improvedResponse h2,
-#improvedResponse h3 {
-    margin: 12px 0 8px;
+.markdown-body > :last-child {
+    margin-bottom: 0;
 }
 
-#originalResponse p,
-#improvedResponse p {
-    margin: 6px 0;
+/* Headings */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+    color: #5b4bdb;
+    line-height: 1.3;
+    margin: 18px 0 6px;
 }
 
-#originalResponse ul,
-#originalResponse ol,
-#improvedResponse ul,
-#improvedResponse ol {
-    margin: 6px 0;
-    padding-left: 20px;
+.markdown-body h1 { font-size: 1.5em; }
+.markdown-body h2 { font-size: 1.3em; }
+.markdown-body h3 { font-size: 1.15em; }
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 { font-size: 1em; }
+
+/* Paragraphs */
+.markdown-body p {
+    margin: 0 0 10px;
 }
 
-#originalResponse li,
-#improvedResponse li {
-    margin: 4px 0;
-}
-
-#originalResponse hr,
-#improvedResponse hr {
-    margin: 12px 0;
-}
-
-#originalResponse,
-#improvedResponse {
-    line-height: 1.5;
-}
-
-#originalResponse h1,
-#originalResponse h2,
-#originalResponse h3,
-#improvedResponse h1,
-#improvedResponse h2,
-#improvedResponse h3 {
-    margin: 12px 0 8px;
-}
-
-#originalResponse p,
-#improvedResponse p {
-    margin: 6px 0;
-}
-
-#originalResponse ul,
-#originalResponse ol,
-#improvedResponse ul,
-#improvedResponse ol {
-    margin: 6px 0;
+/* Lists */
+.markdown-body ul,
+.markdown-body ol {
+    margin: 4px 0 10px;
     padding-left: 24px;
 }
 
-#originalResponse li,
-#improvedResponse li {
-    margin: 4px 0;
+.markdown-body li {
+    margin: 3px 0;
 }
 
-#originalResponse hr,
-#improvedResponse hr {
-    margin: 12px 0;
+/* "Loose" lists wrap each item in a <p>; keep them as tight as normal items */
+.markdown-body li > p {
+    margin: 0;
 }
 
-/* Fix excessive spacing inside AI-generated lists */
+.markdown-body li > p + p {
+    margin-top: 4px;
+}
 
-#originalResponse li p,
-#improvedResponse li p {
-    margin: 0 !important;
+.markdown-body li > ul,
+.markdown-body li > ol {
+    margin: 3px 0 3px;
+}
+
+/* Blockquotes and rules */
+.markdown-body blockquote {
+    margin: 10px 0;
+    padding: 6px 14px;
+    border-left: 4px solid #c4b5fd;
+    background: #f1eeff;
+    color: #444;
+}
+
+.markdown-body blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #e5e0ff;
+    margin: 14px 0;
+}
+
+/* Code */
+.markdown-body code {
+    font-family: "Courier New", Consolas, monospace;
+    font-size: 0.9em;
+    background: #ece9fb;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.markdown-body pre {
+    margin: 10px 0 14px;
+    padding: 14px 16px;
+    background: #1e1e2e;
+    color: #f1f1f5;
+    border-radius: 8px;
+    overflow-x: auto;
+    line-height: 1.5;
+}
+
+.markdown-body pre code {
+    background: none;
     padding: 0;
+    color: inherit;
+    font-size: 0.88em;
+    white-space: pre;
+    overflow-wrap: normal;
 }
 
-#originalResponse li,
-#improvedResponse li {
-    margin: 4px 0 !important;
-    padding: 0;
+/* Tables: wrapper scrolls, the table keeps real table layout */
+.markdown-body .table-wrapper {
+    overflow-x: auto;
+    margin: 10px 0 14px;
 }
 
-#originalResponse ul,
-#originalResponse ol,
-#improvedResponse ul,
-#improvedResponse ol {
-    margin-top: 4px !important;
-    margin-bottom: 8px !important;
+.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-#originalResponse ul ul,
-#originalResponse ol ol,
-#improvedResponse ul ul,
-#improvedResponse ol ol {
-    margin-top: 4px !important;
-    margin-bottom: 4px !important;
+.markdown-body th,
+.markdown-body td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+    min-width: 110px;
+    line-height: 1.5;
+    /* Wrap at word boundaries; narrow screens scroll the wrapper instead */
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.markdown-body th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Honour Markdown column alignment (:---: / ---:) */
+.markdown-body th[align="center"],
+.markdown-body td[align="center"] { text-align: center; }
+.markdown-body th[align="right"],
+.markdown-body td[align="right"] { text-align: right; }
+
+.markdown-body tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 .template-grid {
     display: grid;
