@@ -1,73 +1,75 @@
-/* General Styling */
+/* =========================
+   Base Styles
+========================= */
+
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
     background: #f4f6fb;
-    color: #222;
+    color: #252b36;
     line-height: 1.6;
 }
 
-/* Header */
 header {
-    background: linear-gradient(135deg, #5b4bdb, #8b5cf6);
-    color: white;
+    background: #273c75;
+    color: #ffffff;
     text-align: center;
-    padding: 40px 20px;
+    padding: 32px 20px;
 }
 
 header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
+    margin: 0 0 8px;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
 }
 
 header p {
-    font-size: 16px;
-    opacity: 0.9;
+    margin: 0;
+    color: #e8edff;
 }
 
-/* Main Container */
 main {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 0 20px;
+    width: min(900px, 92%);
+    margin: 28px auto;
 }
 
-/* Cards */
 .card {
-    background: white;
-    padding: 25px;
-    margin-bottom: 25px;
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    min-width: 0;
+    background: #ffffff;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e6ef;
+    box-shadow: 0 3px 12px rgba(25, 40, 75, 0.05);
 }
 
 .card h2 {
-    color: #5b4bdb;
-    margin-bottom: 20px;
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #273c75;
+    font-size: 1.35rem;
 }
 
-/* Form Elements */
 label {
     display: block;
-    font-weight: bold;
-    margin: 15px 0 8px;
+    margin: 16px 0 7px;
+    font-weight: 600;
 }
 
-textarea,
 input,
-select {
+select,
+textarea {
+    display: block;
     width: 100%;
     padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 15px;
-    margin-bottom: 12px;
-    background: #fff;
+    border: 1px solid #cbd2df;
+    border-radius: 7px;
+    font: inherit;
+    color: #252b36;
+    background: #ffffff;
 }
 
 textarea {
@@ -78,70 +80,248 @@ textarea {
 textarea:focus,
 input:focus,
 select:focus {
-    outline: none;
-    border-color: #7c3aed;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    outline: 2px solid #8da7f5;
+    outline-offset: 1px;
+    border-color: #526fca;
 }
 
-/* Buttons */
+textarea[readonly] {
+    background: #f7f8fc;
+}
+
+/* =========================
+   Buttons
+========================= */
+
 button {
-    background: #6d5ce7;
-    color: white;
+    display: inline-block;
+    margin-top: 18px;
+    padding: 11px 18px;
     border: none;
-    padding: 13px 20px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: bold;
+    border-radius: 7px;
+    background: #273c75;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
     cursor: pointer;
-    margin: 12px 0;
-    transition: 0.2s;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 button:hover {
-    background: #5141c7;
-    transform: translateY(-1px);
+    background: #1c2d5c;
 }
 
-/* Response Boxes */
+button:focus-visible {
+    outline: 3px solid #8da7f5;
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Secondary button */
+
+.button-secondary {
+    margin-top: 0;
+    background: #e9edf7;
+    color: #273c75;
+    border: 1px solid #cbd4e8;
+    white-space: nowrap;
+}
+
+.button-secondary:hover {
+    background: #dbe3f5;
+}
+
+/* =========================
+   Response Boxes
+========================= */
+
 .response-box {
-    background: #f8f7ff;
-    border: 1px solid #e5e0ff;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
+    min-width: 0;
+    padding: 16px;
+    margin: 16px 0;
+    border: 1px solid #e0e5ef;
+    border-radius: 9px;
+    background: #f8f9fd;
+    overflow-wrap: anywhere;
 }
 
 .response-box h3 {
-    color: #5b4bdb;
-    margin-bottom: 10px;
+    margin-top: 0;
+    color: #273c75;
 }
 
-/* Evaluation */
-#evaluationResult {
+.response-box p:last-child {
+    margin-bottom: 0;
+}
+
+.response-box pre {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 12px;
+    background: #edf0f7;
+    border-radius: 6px;
+}
+
+.response-box img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* =========================
+   Evaluation Results
+========================= */
+
+#evaluationResults {
+    min-width: 0;
     background: #f0fdf4;
     border: 1px solid #bbf7d0;
     padding: 18px;
     border-radius: 10px;
+    overflow-wrap: anywhere;
 }
 
-/* Footer */
-footer {
+#evaluationResults h3 {
+    color: #273c75;
+    margin: 10px 0 6px;
+}
+
+#evaluationResults hr {
+    border: 0;
+    border-top: 1px solid #e2e6ef;
+    margin: 20px 0;
+}
+
+.evaluation-note {
+    color: #687184;
+    font-size: 0.94rem;
+}
+
+/* =========================
+   Prompt History
+========================= */
+
+.history-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.history-heading h2 {
+    margin-bottom: 4px;
+}
+
+.history-heading .evaluation-note {
+    margin-top: 0;
+}
+
+#promptHistoryList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.history-empty {
+    color: #687184;
+    font-style: italic;
+    margin: 0;
+    padding: 16px;
     text-align: center;
-    padding: 25px;
-    color: #666;
-    font-size: 14px;
+    background: #f8f9fd;
+    border: 1px dashed #cbd2df;
+    border-radius: 8px;
 }
 
-/* Mobile Responsive */
+.history-item {
+    min-width: 0;
+    padding: 18px;
+    background: #f8f9fd;
+    border: 1px solid #e0e5ef;
+    border-radius: 9px;
+}
 
-/* Let grid/flex children and response content shrink instead of widening the page */
+.history-item h3 {
+    margin: 0 0 12px;
+    color: #273c75;
+    font-size: 1.05rem;
+}
+
+.history-item p {
+    margin: 8px 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.history-item .history-date {
+    color: #687184;
+    font-size: 0.85rem;
+}
+
+.history-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.history-actions button {
+    margin-top: 0;
+}
+
+.history-actions .restore-history {
+    background: #273c75;
+}
+
+.history-actions .restore-history:hover {
+    background: #1c2d5c;
+}
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+    padding: 20px;
+    background: #e9edf7;
+    color: #525d72;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* =========================
+   Mobile Responsive
+========================= */
+
+/* Allow content to shrink instead of widening the page */
+
 .card,
 .response-box,
 #evaluationResults {
     min-width: 0;
 }
 
-/* Code blocks in AI responses scroll inside their box instead of the whole page */
+/* Nested list spacing */
+
+#originalResponse ul ul,
+#originalResponse ol ol,
+#improvedResponse ul ul,
+#improvedResponse ol ol {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+}
+
+/* Code blocks scroll inside their box */
+
 #originalResponse pre,
 #improvedResponse pre {
     max-width: 100%;
@@ -170,15 +350,6 @@ footer {
     height: auto;
 }
 
-/* Evaluation scores wrap instead of overflowing */
-#evaluationResults {
-    overflow-wrap: anywhere;
-}
-
-#evaluationResults h3 {
-    margin: 10px 0 6px;
-}
-
 @media (max-width: 768px) {
     main {
         margin: 20px auto;
@@ -194,6 +365,12 @@ footer {
         font-size: 24px;
     }
 
+    main {
+        width: 94%;
+        padding: 0 12px;
+        margin: 18px auto;
+    }
+
     .card {
         padding: 18px;
     }
@@ -203,18 +380,16 @@ footer {
         margin-bottom: 14px;
     }
 
-    main {
-        padding: 0 12px;
-    }
+    /* Prevent iOS Safari zoom when focusing fields */
 
-    /* 16px stops iOS Safari from zooming the page when a field is focused */
     textarea,
     input,
     select {
         font-size: 16px;
     }
 
-    /* Full-width buttons that are easy to tap */
+    /* Full-width buttons for easier tapping */
+
     button {
         width: 100%;
         min-height: 44px;
@@ -227,9 +402,26 @@ footer {
     #evaluationResults h3 {
         font-size: 17px;
     }
+
+    .history-heading {
+        flex-direction: column;
+    }
+
+    .history-heading .button-secondary {
+        margin-top: 4px;
+    }
+
+    .history-actions {
+        flex-direction: column;
+    }
+
+    .history-actions button {
+        width: 100%;
+    }
 }
 
-/* Very small phones (320px) */
+/* Very small phones */
+
 @media (max-width: 360px) {
     header h1 {
         font-size: 21px;
@@ -244,14 +436,15 @@ footer {
     }
 }
 
-/* AI Response Markdown Formatting */
+/* =========================
+   AI Response Markdown
+========================= */
 
 .markdown-body {
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
 
-/* Remove outer spacing so content sits flush inside the response box */
 .markdown-body > :first-child {
     margin-top: 0;
 }
@@ -261,6 +454,7 @@ footer {
 }
 
 /* Headings */
+
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3,
@@ -272,19 +466,32 @@ footer {
     margin: 18px 0 6px;
 }
 
-.markdown-body h1 { font-size: 1.5em; }
-.markdown-body h2 { font-size: 1.3em; }
-.markdown-body h3 { font-size: 1.15em; }
+.markdown-body h1 {
+    font-size: 1.5em;
+}
+
+.markdown-body h2 {
+    font-size: 1.3em;
+}
+
+.markdown-body h3 {
+    font-size: 1.15em;
+}
+
 .markdown-body h4,
 .markdown-body h5,
-.markdown-body h6 { font-size: 1em; }
+.markdown-body h6 {
+    font-size: 1em;
+}
 
 /* Paragraphs */
+
 .markdown-body p {
     margin: 0 0 10px;
 }
 
 /* Lists */
+
 .markdown-body ul,
 .markdown-body ol {
     margin: 4px 0 10px;
@@ -295,7 +502,6 @@ footer {
     margin: 3px 0;
 }
 
-/* "Loose" lists wrap each item in a <p>; keep them as tight as normal items */
 .markdown-body li > p {
     margin: 0;
 }
@@ -306,10 +512,11 @@ footer {
 
 .markdown-body li > ul,
 .markdown-body li > ol {
-    margin: 3px 0 3px;
+    margin: 3px 0;
 }
 
-/* Blockquotes and rules */
+/* Blockquotes and horizontal rules */
+
 .markdown-body blockquote {
     margin: 10px 0;
     padding: 6px 14px;
@@ -328,7 +535,8 @@ footer {
     margin: 14px 0;
 }
 
-/* Code */
+/* Inline code */
+
 .markdown-body code {
     font-family: "Courier New", Consolas, monospace;
     font-size: 0.9em;
@@ -336,6 +544,8 @@ footer {
     padding: 2px 5px;
     border-radius: 4px;
 }
+
+/* Code blocks */
 
 .markdown-body pre {
     margin: 10px 0 14px;
@@ -356,7 +566,8 @@ footer {
     overflow-wrap: normal;
 }
 
-/* Tables: wrapper scrolls, the table keeps real table layout */
+/* Tables */
+
 .markdown-body .table-wrapper {
     overflow-x: auto;
     margin: 10px 0 14px;
@@ -375,7 +586,6 @@ footer {
     vertical-align: top;
     min-width: 110px;
     line-height: 1.5;
-    /* Wrap at word boundaries; narrow screens scroll the wrapper instead */
     overflow-wrap: normal;
     word-break: normal;
 }
@@ -385,15 +595,24 @@ footer {
     font-weight: bold;
 }
 
-/* Honour Markdown column alignment (:---: / ---:) */
 .markdown-body th[align="center"],
-.markdown-body td[align="center"] { text-align: center; }
+.markdown-body td[align="center"] {
+    text-align: center;
+}
+
 .markdown-body th[align="right"],
-.markdown-body td[align="right"] { text-align: right; }
+.markdown-body td[align="right"] {
+    text-align: right;
+}
 
 .markdown-body tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+/* =========================
+   Prompt Templates
+========================= */
+
 .template-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -423,7 +642,10 @@ footer {
     font-weight: normal;
 }
 
-/* Loading Indicator Styles */
+/* =========================
+   Loading Indicator
+========================= */
+
 .loading-indicator {
     display: flex;
     flex-direction: column;
@@ -453,17 +675,14 @@ footer {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
 }
 
+/* Utility class */
+
 .hidden {
     display: none !important;
-}
-
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
 }
