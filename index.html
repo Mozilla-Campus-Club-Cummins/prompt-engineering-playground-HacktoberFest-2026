@@ -64,6 +64,9 @@
                 placeholder="Your improved prompt will appear here..."
                 readonly
             ></textarea>
+            <button id="copyPrompt" type="button">Copy Prompt</button>
+<p id="copyMessage" role="status" aria-live="polite"></p>
+
         </section>
 
         <section class="card">
@@ -86,13 +89,20 @@
             <button id="compareResponses" type="button">
                 Compare Responses
             </button>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-indicator hidden" aria-live="polite">
+                <div class="spinner"></div>
+                <p>Generating and comparing AI responses...</p>
+            </div>
         </section>
 
+        <!-- Evaluation Section -->
         <section class="card">
             <h2>📊 Prompt Quality Evaluation</h2>
 
             <p class="evaluation-note">
-                Scores are based on rule-based checks and do not guarantee response quality.
+                Scores are based on simple rule-based checks and do not guarantee response quality.
             </p>
 
             <div id="evaluationResults" aria-live="polite">

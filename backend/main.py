@@ -76,10 +76,26 @@ def generate_response(prompt: str) -> str:
             }
         ],
         temperature=0.2,
+
         max_tokens=2000
     )
 
-    return response.choices[0].message.content
+
+    choices = getattr(response, "choices", None)
+
+    if not choices:
+        return ""
+
+    choice = choices[0]
+    message = getattr(choice, "message", None)
+    content = getattr(message, "content", None)
+
+    if not isinstance(content, str) or not content.strip():
+        return ""
+
+    return content.strip()
+
+
 
 # Basic health-check endpoint
 @app.get("/")
@@ -91,6 +107,7 @@ def home():
 
 # Compare responses from original and improved prompts
 @app.post("/api/compare")
+
 def compare_prompts(request: CompareRequest):
 
     if not request.original_prompt.strip():
@@ -114,10 +131,19 @@ def compare_prompts(request: CompareRequest):
             request.improved_prompt
         )
 
+        if not original_response or not improved_response:
+            raise HTTPException(
+                status_code=502,
+                detail="AI response is unavailable. Please try again."
+            )
+
         return {
             "original_response": original_response,
             "improved_response": improved_response
         }
+
+    except HTTPException:
+        raise
 
     except Exception as error:
         raise HTTPException(
