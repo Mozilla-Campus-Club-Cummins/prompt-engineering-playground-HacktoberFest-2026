@@ -18,6 +18,50 @@
 
     <main>
 
+        <!-- Prompt Templates Section -->
+        <section class="card">
+        <h2>Explore Prompt Templates</h2>
+        <p>Choose a template to get started with an effective prompt.</p>
+
+        <div class="template-grid">
+        <button type="button" class="template-btn"
+        data-prompt="Summarize the following text into 5 key points: [Insert text]">
+        <strong>Summarization</strong>
+        <span>Turn long text into key points.</span>
+        </button>
+
+        <button type="button" class="template-btn"
+        data-prompt="Explain [topic] in simple language with examples for a beginner.">
+        <strong>Explanation</strong>
+        <span>Understand complex topics easily.</span>
+        </button>
+
+        <button type="button" class="template-btn"
+        data-prompt="Brainstorm 10 creative ideas for [goal]. Include a short description of each idea.">
+        <strong>Brainstorming</strong>
+        <span>Generate fresh ideas.</span>
+        </button>
+
+        <button type="button" class="template-btn"
+        data-prompt="Compare [option A] and [option B] based on features, advantages, disadvantages, and use cases.">
+        <strong>Comparison</strong>
+        <span>Compare two options clearly.</span>
+        </button>
+
+        <button type="button" class="template-btn"
+        data-prompt="Create a step-by-step learning plan for [topic], including practice tasks and common mistakes.">
+        <strong>Learning Plan</strong>
+        <span>Build a structured study plan.</span>
+        </button>
+
+        <button type="button" class="template-btn"
+        data-prompt="Review the following text for clarity, grammar, and structure. Suggest improvements while preserving its meaning: [Insert text]">
+        <strong>Writing Improvement</strong>
+        <span>Improve your writing.</span>
+        </button>
+        </div>
+        </section>
+        
         <!-- Original Prompt Section -->
         <section class="card">
             <h2>1. Enter Your Prompt</h2>
@@ -90,15 +134,21 @@
                 </p>
             </div>
 
-            <button id="compareResponses">
-                Compare Responses
-            </button>
+           <button id="compareResponses" type="button">
+    Compare Responses
+</button>
 
-            <!-- Loading Indicator -->
-            <div id="loadingIndicator" class="loading-indicator hidden" aria-live="polite">
-                <div class="spinner"></div>
-                <p>Generating and comparing AI responses...</p>
-            </div>
+<button id="exportResponses" type="button">
+    Export Responses
+</button>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading-indicator hidden" aria-live="polite">
+            <div class="spinner"></div>
+            <p>Generating and comparing AI responses...</p>
+        </div>
+
+
         </section>
 
         <!-- Evaluation Section -->
