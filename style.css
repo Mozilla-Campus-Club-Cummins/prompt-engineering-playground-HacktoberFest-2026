@@ -138,7 +138,63 @@ footer {
 }
 
 /* Mobile Responsive */
+
+/* Let grid/flex children and response content shrink instead of widening the page */
+.card,
+.response-box,
+#evaluationResults {
+    min-width: 0;
+}
+
+/* Code blocks in AI responses scroll inside their box instead of the whole page */
+#originalResponse pre,
+#improvedResponse pre {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 12px;
+    margin: 10px 0;
+    background: #efeefb;
+    border-radius: 8px;
+    white-space: pre;
+    font-size: 14px;
+}
+
+#originalResponse code,
+#improvedResponse code {
+    overflow-wrap: anywhere;
+}
+
+#originalResponse pre code,
+#improvedResponse pre code {
+    overflow-wrap: normal;
+}
+
+#originalResponse img,
+#improvedResponse img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Evaluation scores wrap instead of overflowing */
+#evaluationResults {
+    overflow-wrap: anywhere;
+}
+
+#evaluationResults h3 {
+    margin: 10px 0 6px;
+}
+
+@media (max-width: 768px) {
+    main {
+        margin: 20px auto;
+    }
+}
+
 @media (max-width: 600px) {
+    header {
+        padding: 28px 16px;
+    }
+
     header h1 {
         font-size: 24px;
     }
@@ -147,8 +203,49 @@ footer {
         padding: 18px;
     }
 
+    .card h2 {
+        font-size: 20px;
+        margin-bottom: 14px;
+    }
+
     main {
         padding: 0 12px;
+    }
+
+    /* 16px stops iOS Safari from zooming the page when a field is focused */
+    textarea,
+    input,
+    select {
+        font-size: 16px;
+    }
+
+    /* Full-width buttons that are easy to tap */
+    button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .response-box {
+        padding: 14px;
+    }
+
+    #evaluationResults h3 {
+        font-size: 17px;
+    }
+}
+
+/* Very small phones (320px) */
+@media (max-width: 360px) {
+    header h1 {
+        font-size: 21px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    main {
+        padding: 0 8px;
     }
 }
 
