@@ -56,8 +56,16 @@ document.getElementById("generatePrompt").addEventListener("click", function () 
     evaluationResults.textContent = "Your evaluation results will appear here.";
 });
 
-// Render sanitized Markdown responses
+
+
+ // Render sanitized Markdown responses safely
 function renderResponse(element, text) {
+    if (typeof text !== "string" || !text.trim()) {
+        element.textContent =
+            "AI response is unavailable. Please try again.";
+        return;
+    }
+
     const cleanedText = text
         .replace(/\r\n/g, "\n")
         .replace(/\n[ \t]*\n(?:[ \t]*\n)+/g, "\n\n")
@@ -67,6 +75,7 @@ function renderResponse(element, text) {
         marked.parse(cleanedText)
     );
 }
+
 
 // STEP 2: Compare Responses using Groq API
 compareResponsesBtn.addEventListener("click", async function () {
@@ -205,32 +214,30 @@ function displayEvaluation(originalPrompt, improvedPrompt) {
         <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
     `;
 }
-
-
 // STEP 5: Export Original and Improved Responses
+const exportResponsesButton = document.getElementById("exportResponses");
 
-document.getElementById("exportResponses").addEventListener("click", function () {
-    const original = originalPrompt.value.trim();
-    const improved = improvedPrompt.value.trim();
+if (exportResponsesButton) {
+    exportResponsesButton.addEventListener("click", function () {
+        const original = originalPrompt.value.trim();
+        const improved = improvedPrompt.value.trim();
 
-    const originalAnswer = originalResponse.innerText.trim();
-    const improvedAnswer = improvedResponse.innerText.trim();
+        const originalAnswer = originalResponse.innerText.trim();
+        const improvedAnswer = improvedResponse.innerText.trim();
 
-    const unavailableMessages = [
-    "",
-    "Generating AI response...",
-    "Failed to generate response.",
-    "Click Compare Responses to generate the AI response.",
-    "Your original prompt's AI response will appear here.",
-    "Your improved prompt's AI response will appear here."
-];
+        const unavailableMessages = [
+            "",
+            "Generating AI response...",
+            "Failed to generate response.",
+            "Click Compare Responses to generate the AI response.",
+            "Your original prompt's AI response will appear here.",
+            "Your improved prompt's AI response will appear here."
+        ];
 
+        const originalIsUnavailable = unavailableMessages.includes(originalAnswer);
+        const improvedIsUnavailable = unavailableMessages.includes(improvedAnswer);
 
-
-    const originalIsUnavailable = unavailableMessages.includes(originalAnswer);
-    const improvedIsUnavailable = unavailableMessages.includes(improvedAnswer);
-
-    const content = `
+        const content = `
 PROMPT ENGINEERING PLAYGROUND
 =============================
 
@@ -250,41 +257,50 @@ ${improvedIsUnavailable ? "No improved response available. Please generate the r
 Exported from Prompt Engineering Playground
 `;
 
-    const file = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const link = document.createElement("a");
-    const fileURL = URL.createObjectURL(file);
+        const file = new Blob([content], { type: "text/plain;charset=utf-8" });
+        const link = document.createElement("a");
+        const fileURL = URL.createObjectURL(file);
 
-    link.href = fileURL;
-    link.download = "prompt-responses.txt";
+        link.href = fileURL;
+        link.download = "prompt-responses.txt";
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-    URL.revokeObjectURL(fileURL);
+        URL.revokeObjectURL(fileURL);
+    });
+}
+
+// STEP 6: Select a Prompt Template
+const templateButtons = document.querySelectorAll(".template-btn");
+
+templateButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        originalPrompt.value = button.dataset.prompt;
+        originalPrompt.focus();
+    });
 });
 
-
-
-
-// STEP 6: Copy Improved Prompt
-
+// STEP 7: Copy Improved Prompt
 const copyPromptButton = document.getElementById("copyPrompt");
 const copyMessage = document.getElementById("copyMessage");
 
-copyPromptButton.addEventListener("click", async function () {
-    const prompt = improvedPrompt.value.trim();
+if (copyPromptButton && copyMessage) {
+    copyPromptButton.addEventListener("click", async function () {
+        const prompt = improvedPrompt.value.trim();
 
-    if (!prompt) {
-        copyMessage.textContent = "No improved prompt available to copy.";
-        return;
-    }
+        if (!prompt) {
+            copyMessage.textContent = "No improved prompt available to copy.";
+            return;
+        }
 
-    try {
-        await navigator.clipboard.writeText(prompt);
-        copyMessage.textContent = "Prompt copied successfully!";
-    } catch (error) {
-        copyMessage.textContent =
-            "Unable to copy the prompt. Please copy it manually.";
-    }
-});
+        try {
+            await navigator.clipboard.writeText(prompt);
+            copyMessage.textContent = "Prompt copied successfully!";
+        } catch (error) {
+            copyMessage.textContent =
+                "Unable to copy the prompt. Please copy it manually.";
+        }
+    });
+}
