@@ -374,28 +374,7 @@ compareResponsesBtn.addEventListener("click", async function () {
     }
 });
 
-        evaluationResults.textContent = "Error: " + error.message;
-    } finally {
-        button.disabled = false;
-        button.textContent = "Compare Responses";
-        // Display actual AI responses
-        renderResponse(originalResponse, data.original_response);
-        renderResponse(improvedResponse, data.improved_response);
-
-        // Evaluate both prompts
-        displayEvaluation(original, improved);
-
-    } catch (error) {
-        console.error("Comparison error:", error);
-        originalResponse.textContent = "Failed to generate response.";
-        improvedResponse.textContent = "Failed to generate response.";
-        evaluationResults.textContent = "Error: " + error.message;
-    } finally {
-        // Always hides the loader and re-enables the button (both success and error)
-        setLoading(false);
-    }
-});
-
+       
 clearPromptHistoryButton.addEventListener("click", function () {
     if (promptHistory.length === 0) {
         return;
@@ -419,10 +398,8 @@ clearPromptHistoryButton.addEventListener("click", function () {
 });
 
 
-        <h3>Score Difference: ${improved.total - original.total} points</h3>
-        <p>Note: These are rule-based scores, not a guarantee of response quality.</p>
-    `;
-}
+
+
 // STEP 5: Copy Improved Prompt
 
 const copyPromptButton = document.getElementById("copyPrompt");
